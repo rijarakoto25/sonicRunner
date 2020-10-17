@@ -1,0 +1,54 @@
+body {
+  color: white;
+}
+
+#logo {
+  margin: auto;
+}
+
+#Demarrer {
+  color: blue;
+  border: none;
+  border-radius: 5px;
+  background-color: yellow;
+  position: relative center;
+}
+
+.avatar {
+  height: 50px;
+  width: 50px;
+}
+
+.background {
+  background-color: #0173be;
+}
+
+.track {
+  height: 80px;
+  background-color: #fdfa56;
+  border-color: white;
+  border-width: 8px;
+}
+
+.pseudo {
+  height: 30px;
+  width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sendBack {
+  width: 50px;
+  height: 50px;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: sendBackH;
+  -ms-filter: "sendBackH";
+}
+
+#table {
+  height: 220px;
+  overflow: auto;
+}

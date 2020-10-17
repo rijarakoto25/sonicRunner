@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sonic Runner</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- En-tête -->
+    <nav class="navbar navbar-light bg-faded background">
+      <h1 id="logo">
+        <img src="sonic_runner.jpg" alt="logo sonic runner" />
+      </h1>
+    </nav>
+    <!--Colonne dynamique avec bootstrap=> page d'accueil-->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 background">
+          <div id="trackInfo">
+            <div class="text-center">
+              <h3>Règle du jeux:</h3>
+              <h4>
+                Appuyer sur
+                <strong> ESPACE</strong> le plus rapidement possible pour
+                déplacer votre Sonic
+              </h4>
+            </div>
+          </div>
+
+          <div class="timer"></div>
+
+          <!--Joueur 1-->
+          <div class="row row-player1" style="visibility: hidden">
+            <div class="track">
+              <div class="trackMove1" style="margin-left: 0px">
+                <div class="avatar">
+                  <img id="player1" class="sendBack" src="sonic.png" />
+                </div>
+                <div class="playerAvatar1 pseudo"></div>
+              </div>
+            </div>
+          </div>
+
+          <p></p>
+          <!--Joueur 2-->
+          <div class="row row-player2" style="visibility: hidden">
+            <div class="track">
+              <div class="trackMove2">
+                <div class="avatar">
+                  <img id="player2" class="sendBack" src="sonic.png" />
+                </div>
+                <div class="playerAvatar2 pseudo"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5 background">
+          <form action="#">
+            <div class="form-group">
+              <label for="avatar" class="text-center"
+                >Entrez votre pseudo</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="avatar"
+                required="required"
+              />
+            </div>
+            <div id="formMessage"></div>
+            <button type="submit" class="btn btn-default">Entrer</button>
+          </form>
+
+          <div id="table" style="visibility: hidden">
+            <h4 class="text-center">Palmarès</h4>
+            <table
+              class="table"
+              style="background-color: #53baff"
+              id="scoreboard"
+            >
+              <thead>
+                <tr>
+                  <th>Pseudo</th>
+                  <th>Score</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>N</td>
+                  <td>O</td>
+                  <td>P</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              <button onclick=" restart()" id="Demarrer">
+                Recommencer une partie
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <p></p>
+      <div class="row text-center" id="information"></div>
+    </div>
+  </body>
+</html>
