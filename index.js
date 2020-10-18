@@ -4,17 +4,18 @@ var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io")(server);
 var mongoose = require("mongoose");
-
-//Paramétrage de mongodb
-mongoose.connect("mongodb://localhost/runner", { useMongoClient: true });
-
-
 //Déclaration des fichiers statiques
 app.use(express.static("./public"));
 
-//Déclaration de joueur
+//Paramétrage de mongoose (https://atinux.developpez.com/tutoriels/javascript/mongodb-nodejs-mongoose/)
+//mongoose.connect("mongodb://localhost/run", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/racer', {
+  useMongoClient: true
+});
+
+// Création de Schéma pour les joueurs
 var playerSchema = mongoose.Schema({
-  avatar: String,
+  sonic: String,
   time: { type: Number, default: 0 },
   score: { type: Number, default: 0 },
 });
@@ -33,24 +34,24 @@ app.get("/", function (req, res) {
 });
 
 //création du room pour les joueurs
-var avatarBox = {
+var sonicBox = {
   box: [],
-  add: function (avatar) {
-    this.box.push(avatar);
+  add: function (sonic) {
+    this.box.push(sonic);
   },
-  remove: function (avatar) {
-    var index = this.box.indexOf(avatar);
+  remove: function (sonic) {
+    var index = this.box.indexOf(sonic);
     if (index > -1) this.box.splice(index, 1);
   },
-  competitor: function (avatar) {
+  competitor: function (sonic) {
     return this.box.filter(function (element) {
-      return element != avatar;
+      return element != sonic;
     })[0];
   },
 };
 
 var defaultSpeed = 10;
-var defaultTrackLength = 100;
+var defaultTrackLength = 200;
 var hasWinner = false;
 var timeWinner = 0;
 
@@ -62,9 +63,9 @@ io.sockets.on("connection", function (socket) {
   var dateEnd = 0;
 
   //Si un utilisateur se connect en trop 'length>1'
-  socket.on("newPseudo", function (avatar) {
-    console.log(avatarBox.box);
-    if (avatarBox.box.length > 1) {
+  socket.on("newPseudo", function (sonic) {
+    console.log(sonicBox.box);
+    if (sonicBox.box.length > 1) {
       socket.emit("track", {
         code: 503,
         message: `<div class="text-center"><h3>La room est plein, merci de revenir plus tard et de rafraichir la page</h3></div>`,
@@ -73,9 +74,9 @@ io.sockets.on("connection", function (socket) {
       console.log("client deconnecter");
       return;
     }
-    avatar = avatar.trim();
-    //avatar vide
-    if (avatar == 0) {
+    sonic = sonic.trim();
+    //sonic vide
+    if (sonic == 0) {
       console.log("chaine vide");
       socket.emit("newPseudo", {
         code: 401,
@@ -85,7 +86,7 @@ io.sockets.on("connection", function (socket) {
     }
 
     //Si pseudo déjà utiliser
-    Player.count({ avatar: avatar }, function (err, count) {
+    Player.count({ sonic: sonic }, function (err, count) {
       if (err) return handleError(err);
 
       if (count > 0) {
@@ -104,34 +105,34 @@ io.sockets.on("connection", function (socket) {
           });
 
         //Déclaration du joueur1
-        var player = new Player({ avatar: avatar });
+        var player = new Player({ sonic: sonic });
         player.save(function (err) {
           if (err) return handleError(err);
-          socket.emit("newPseudo", { code: 200, message: "nouveau avatar" });
-          avatarBox.add(player.avatar);
+          socket.emit("newPseudo", { code: 200, message: "nouveau sonic" });
+          sonicBox.add(player.sonic);
           //Joueur2
-          if (avatarBox.box.length === 1) {
+          if (sonicBox.box.length === 1) {
             socket.emit("track", {
               code: 404,
               message: `<div class="text-center"><h5>En attente d un autre joueurs</h5></div>`,
-              avatar1: player.avatar,
+              sonic1: player.sonic,
             });
           }
-          if (avatarBox.box.length === 2) {
+          if (sonicBox.box.length === 2) {
             socket.emit("track", {
               code: 200,
               message:
-                '<div class="text-center"><h5>La partie peut commencer quand vous voulez, appuyer sur la barre espace pour faire avancer votre avatar</h5></div>',
-              avatar1: player.avatar,
-              avatar2: avatarBox.competitor(player.avatar),
+                '<div class="text-center"><h5>La partie peut commencer quand vous voulez, appuyer sur la barre espace pour faire avancer votre Sonic</h5></div>',
+              sonic1: player.sonic,
+              sonic2: sonicBox.competitor(player.sonic),
             });
 
             //update joueur1
             socket.broadcast.emit("track", {
               code: 202,
               message:
-                '<div class="text-center"><h5>La partie peut commencer quand vous voulez, appuyer sur la barre espace pour faire avancer votre avatar</h5></div>',
-              avatar2: player.avatar,
+                '<div class="text-center"><h5>La partie peut commencer quand vous voulez, appuyer sur la barre espace pour faire avancer votre Sonic</h5></div>',
+              sonic2: player.sonic,
             });
 
             //Compte à rebour avant lancement du jeu
@@ -176,7 +177,7 @@ io.sockets.on("connection", function (socket) {
             if (trMoov >= 1 && dateEnd == 0) {
               dateEnd = new Date() - dateStart;
               console.log(
-                `fin de la game en: ${dateEnd} pour ${player.avatar}`
+                `fin de la game en: ${dateEnd} pour ${player.sonic}`
               );
 
           // Affichage de l'image win au winner
@@ -226,7 +227,7 @@ io.sockets.on("connection", function (socket) {
           
             // Déconnexion d'un joueur
           socket.on("disconnect", function () {
-            avatarBox.remove(player.avatar);
+            sonicBox.remove(player.sonic);
           });
         });
       }
