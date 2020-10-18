@@ -1,7 +1,7 @@
-//Partie socket
+  // Partie socket
 var socket = io.connect("http://localhost:3000");
 
-//Paramétrage de la touche 'Espace'
+  // Paramétrage de la touche 'Espace'
 var spaceKey = true;
 
 function step(spaceKey) {
@@ -25,11 +25,11 @@ window.addEventListener("load", function () {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     formMessage.innerText = "";
-    var inputAvatar = document.getElementById("avatar").value;
-    socket.emit("newPseudo", inputAvatar);
+    var inputSonic = document.getElementById("sonic").value;
+    socket.emit("newPseudo", inputSonic);
   });
 
-  //saisie du pseudo
+  // Saisie du pseudo
   socket.on("newPseudo", function (message) {
     switch (message.code) {
       case 401:
@@ -47,7 +47,7 @@ window.addEventListener("load", function () {
         break;
     }
   });
-  //Affichage des joueurs
+  // Affichage des joueurs
   socket.on("track", function (message) {
     switch (message.code) {
       case 503:
@@ -57,8 +57,8 @@ window.addEventListener("load", function () {
         document.getElementById("trackInfo").innerHTML = message.message;
         document.getElementsByClassName("row-player1")[0].style.visibility =
           "visible";
-        document.getElementsByClassName("playerAvatar1")[0].textContent =
-          message.avatar1;
+        document.getElementsByClassName("playerSonic1")[0].textContent =
+          message.sonic1;
         break;
       case 200:
         document.getElementById("trackInfo").innerHTML = message.message;
@@ -66,21 +66,21 @@ window.addEventListener("load", function () {
           "visible";
         document.getElementsByClassName("row-player2")[0].style.visibility =
           "visible";
-        document.getElementsByClassName("playerAvatar1")[0].textContent =
-          message.avatar1;
-        document.getElementsByClassName("playerAvatar2")[0].textContent =
-          message.avatar2;
+        document.getElementsByClassName("playerSonic1")[0].textContent =
+          message.sonic1;
+        document.getElementsByClassName("playerSonic2")[0].textContent =
+          message.sonic2;
         break;
       case 202:
         document.getElementById("trackInfo").innerHTML = message.message;
         document.getElementsByClassName("row-player2")[0].style.visibility =
           "visible";
-        document.getElementsByClassName("playerAvatar2")[0].textContent =
-          message.avatar2;
+        document.getElementsByClassName("playerSonic2")[0].textContent =
+          message.sonic2;
         break;
     }
   });
-  //Déplacement des avatars
+  // Déplacement des avatars
   socket.on("trackMove", function (message) {
     if (message.px1) {
       var witdhDiv = document.getElementsByClassName("row-player1")[0]
@@ -98,7 +98,7 @@ window.addEventListener("load", function () {
         newPx + "px";
     }
   });
-  //Affichage des scores
+  // Affichage des scores
   socket.on("scoreboard", function (players) {
     document.getElementById("scoreboard").innerHTML = "";
 
@@ -114,7 +114,7 @@ window.addEventListener("load", function () {
 
     players.forEach(function (player) {
       var template = `<tr>
-                                <td>${player.avatar}</td>
+                                <td>${player.sonic}</td>
                                 <td>${player.score}</td>
                                  <td>${player.time / 1000} s</td>
                               </tr>`;
@@ -138,11 +138,13 @@ window.addEventListener("load", function () {
     step(spaceKey);
   });
 
-  //Chargement des images loose et win
+  // Chargement des images loose et win
   socket.on("img", function (message) {
     document.getElementById(message.player).src = message.img + "-007.gif";
   });
 });
+ 
+  //Recommencer une partie
 function restart() {
   location.reload();
 }
