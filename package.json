@@ -1,18 +1,23 @@
 {
-  "name": "ifocop-racer",
+  "name": "sonic-racer",
   "version": "1.0.0",
+  "description": "![SONIC RUNNER](https://github.com/rijarakoto25/sonicRunner/blob/main/readMeSonic.png?raw=true):Jeux de course qui va tester la rapidité du joueur à faire déplacer son avatar\r TP BackEnd sur un jeu simpliste conçu avec: Express et webSocket\r Coté frontEnd: Html, CSS et JavaSript",
   "main": "index.js",
-  "repository": "https://gitlab.com/ergot/ifocop-racer.git",
-  "author": "ergot <wjose14@hotmail.com>",
-  "license": "MIT",
-  "scripts": {
-    "start": "node_modules/nodemon/bin/nodemon.js"
-  },
   "dependencies": {
-    "express": "^4.15.2",
-    "mongodb": "^2.2.24",
-    "mongoose": "^4.8.6",
-    "nodemon": "^1.11.0",
-    "socket.io": "^1.7.3"
-  }
+    "mongoose": "^4.13.21"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rijarakoto25/sonicRunner.git"
+  },
+  "author": "Rija",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rijarakoto25/sonicRunner/issues"
+  },
+  "homepage": "https://github.com/rijarakoto25/sonicRunner#readme"
 }
