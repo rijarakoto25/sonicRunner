@@ -1,28 +1,28 @@
 //Déclaration des modules
-var express = require("express");
-var app = express();
-var server = require("http").createServer(app);
-var io = require("socket.io")(server);
-var mongoose = require("mongoose");
+const express = require("express");
+const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+
+
 //Déclaration des fichiers statiques
 app.use(express.static("./public"));
 
-//Paramétrage de mongoose (https://atinux.developpez.com/tutoriels/javascript/mongodb-nodejs-mongoose/)
-//mongoose.connect("mongodb://localhost/run", {useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.connect('mongodb://localhost/racer', {
-  useMongoClient: true
-});
+//Paramétrage de mongoose (https://mongoosejs.com/docs/4.x/)
+/*mongoose.connect("mongodb://rija:Boubou91!@cluster0.hubrv.mongodb.net/racer", {
+ useMongoClient: true
+});*/
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/racer", {useMongoClient: true});
+mongoose.Promise = global.Promise;
 
 // Création de Schéma pour les joueurs
-var playerSchema = mongoose.Schema({
-  sonic: String,
+const Player = mongoose.model('Player', new mongoose.Schema({ sonic: String,
   time: { type: Number, default: 0 },
-  score: { type: Number, default: 0 },
-});
-var Player = mongoose.model("Player", playerSchema);
+  score: { type: Number, default: 0 }, }));
 
 //Connection à la base de données
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
   console.log("On est bien connecté a la base");
@@ -34,7 +34,7 @@ app.get("/", function (req, res) {
 });
 
 //création du room pour les joueurs
-var sonicBox = {
+const sonicBox = {
   box: [],
   add: function (sonic) {
     this.box.push(sonic);
