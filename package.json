@@ -4,19 +4,16 @@
   "description": "![SONIC RUNNER](https://github.com/rijarakoto25/sonicRunner/blob/main/readMeSonic.png?raw=true):Jeux de course qui va tester la rapidité du joueur à faire déplacer son avatar\r TP BackEnd sur un jeu simpliste conçu avec: Express et webSocket\r Coté frontEnd: Html, CSS et JavaSript",
   "main": "index.js",
   "dependencies": {
+    "babel": "^6.23.0",
+    "cool-ascii-faces": "^1.3.4",
     "express": "^4.17.1",
-    "mongoose": "^4.13.21",
+    "mongoose": "^5.7.0",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "NODE_ENV=dev nodemon ./src/server.js --exec babel-node",
-       "prebuild": "rimraf dist",
-       "build": "babel ./src -d dist --presets es2015,stage-2 --ignore spec.js,node_modules",
-       "serve": "NODE_ENV=production node dist/server.js",
-       "start_babel": "babel-node ./server.js --preset=babel-preset-es2015",
-       "test": "echo \"Error: no test specified\" && exit 1",
-       "lint": "eslint ."
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

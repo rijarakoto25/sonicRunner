@@ -3,17 +3,20 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
+const cool = require('cool-ascii-faces');
+
 
 
 //Déclaration des fichiers statiques
 app.use(express.static("./public"));
+app.set('view engine', 'ejs')
+app.get('/cool', (req, res) => res.send(cool()))
 
-//Paramétrage de mongoose (https://mongoosejs.com/docs/4.x/)
-/*mongoose.connect("mongodb://rija:Boubou91!@cluster0.hubrv.mongodb.net/racer", {
- useMongoClient: true
-});*/
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/racer", {useMongoClient: true});
+//Paramétrage de mongoose (https://mongoosejs.com/docs/4.x/)
+mongoose.connect("mongodb+srv://rija:Boubou91!@cluster0.hubrv.mongodb.net/racer?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true });
+//mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true , useUnifiedTopology: true });
+//mongoose.connect("mongodb://localhost/racer", {useMongoClient: true});
 mongoose.Promise = global.Promise;
 
 // Création de Schéma pour les joueurs
@@ -23,7 +26,7 @@ const Player = mongoose.model('Player', new mongoose.Schema({ sonic: String,
 
 //Connection à la base de données
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
+db.on("error", console.error.bind(console, "La connexion a échoué: "));
 db.once("open", function () {
   console.log("On est bien connecté a la base");
 });
@@ -92,7 +95,7 @@ io.sockets.on("connection", function (socket) {
       if (count > 0) {
         socket.emit("newPseudo", {
           code: 451,
-          message: '<p class="alert alert-danger"> pseudo deja pris</p>',
+          message: '<p class="alert alert-danger"> pseudo déjà pris</p>',
         });
       } else {
         //Sinon lancer le jeux
@@ -137,7 +140,7 @@ io.sockets.on("connection", function (socket) {
 
             //Compte à rebour avant lancement du jeu
             var compte = 3;
-            console.log("Tictac! " + compte);
+            console.log(compte);
             io.emit(
               "timer",
               `<div class="text-center"><h2>${compte}</h2></div>`
@@ -146,7 +149,7 @@ io.sockets.on("connection", function (socket) {
             var id = setInterval(
               function (socket) {
                 compte--;
-                console.log("titac " + compte);
+                console.log(compte);
                 io.emit(
                   "timer",
                   `<div class="text-center"><h2>${compte}</h2></div>`
@@ -234,4 +237,6 @@ io.sockets.on("connection", function (socket) {
     });
   });
 });
-server.listen("3000", () => console.log("Écoute sur le port 3000"));
+
+const port = process.env.PORT || "3000";
+server.listen(port, () => console.log(`Écoute sur le port ${port}`));

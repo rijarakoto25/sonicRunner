@@ -1,5 +1,6 @@
   // Partie socket
-var socket = io.connect("http://localhost:3000");
+//var socket = io.connect("http://localhost:3000");
+var socket = io.connect("https://sonic-racer.herokuapp.com");
 
   // Paramétrage de la touche 'Espace'
 var spaceKey = true;
